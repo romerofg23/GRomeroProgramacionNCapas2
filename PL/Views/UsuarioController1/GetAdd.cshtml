@@ -1,0 +1,79 @@
+﻿@model ML.Usuario
+
+@{
+    ViewData["Title"] = "Agregar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Agregar Usuario</h2>
+
+@using (Html.BeginForm("GetAdd", "UsuarioController1", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12 border p-3">
+            <div class="row">
+                <div class="col-md-6 mt-2">
+                    @Html.LabelFor(model => model.UserName)
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Contraseña")
+                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Contraseña", type = "password" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.LabelFor(model => model.Nombre)
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Apellido Paterno")
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Apellido Materno")
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Correo")
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.LabelFor(model => model.FechaNacimiento, "Fecha de Nacimiento")
+                    @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", type = "date" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Sexo")
+                    <div>
+                        @Html.RadioButtonFor(model => model.Sexo, "M") Masculino
+                        @Html.RadioButtonFor(model => model.Sexo, "F", new { @style = "margin-left:15px;" }) Femenino
+                    </div>
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Teléfono")
+                    @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", placeholder = "Teléfono" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Celular")
+                    @Html.TextBoxFor(model => model.Celular, new { @class = "form-control", placeholder = "Celular" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("CURP")
+                    @Html.TextBoxFor(model => model.CURP, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 mt-2">
+                    @Html.Label("Rol")
+                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "NombreRol"), "Selecciona un Rol", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-4 mb-5">
+        <div class="col-md-6">
+            @Html.ActionLink("Regresar", "GetAll", "UsuarioController1", null, new { @class = "btn btn-danger w-100" })
+        </div>
+        <div class="col-md-6 text-end">
+            <button type="submit" class="btn btn-success w-100">Guardar</button>
+        </div>
+    </div>
+}

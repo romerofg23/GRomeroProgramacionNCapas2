@@ -1,0 +1,171 @@
+﻿@model ML.Usuario
+
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-center my-4">Lista de Usuarios</h2>
+
+    <div class="row mb-4 justify-content-center">
+        <div class="col-auto">
+            <button id="btnBusquedaAbierta" class="btn btn-primary">BÚSQUEDA ABIERTA</button>
+        </div>
+        <div class="col-auto">
+            @using (Html.BeginForm("GetAll", "UsuarioController1", FormMethod.Post))
+            {
+                <button type="submit" class="btn btn-success">BÚSQUEDA MASIVA</button>
+            }
+        </div>
+    </div>
+
+    <div class="row mb-4 justify-content-center">
+        <div class="col-auto">
+            <a class="btn btn-success" asp-controller="UsuarioController1" asp-action="GetAdd">AGREGAR USUARIO</a>
+        </div>
+    </div>
+
+    <div id="formBusquedaAbierta" style="display: none;">
+
+        @using (Html.BeginForm("GetAll", "UsuarioController1", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre" })
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", placeholder = "Apellido Paterno" })
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", placeholder = "Apellido Materno" })
+                </div>
+                <div class="col-md-2">
+                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol?.Roles ?? new List<object>(), "IdRol", "NombreRol"), "Selecciona un Rol", new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark w-100">Buscar</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary w-100" id="btnCancelarBusqueda">Cancelar</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.Usuarios != null && Model.Usuarios.Count > 0)
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Email</th>
+                    <th>Sexo</th>
+                    <th>Teléfono</th>
+                    <th>Celular</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Usuario usuario in Model.Usuarios)
+                {
+                    <tr id="row-@usuario.IdUsuario">
+                        <td>
+                            <a class="btn btn-warning" href="@Url.Action("GetAdd", "UsuarioController1", new { IdUsuario = usuario.IdUsuario })">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                </svg>
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-delete" data-id="@usuario.IdUsuario" data-nombre="@usuario.Nombre">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                </svg>
+                            </button>
+                        </td>
+                        <td>@usuario.IdUsuario</td>
+                        <td>@usuario.Nombre</td>
+                        <td>@usuario.ApellidoPaterno</td>
+                        <td>@usuario.ApellidoMaterno</td>
+                        <td>@usuario.Email</td>
+                        <td>@usuario.Sexo</td>
+                        <td>@usuario.Telefono</td>
+                        <td>@usuario.Celular</td>
+                        <td>@usuario.Rol?.NombreRol</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de eliminar al usuario <strong id="usuarioNombre"></strong> (ID: <span id="usuarioId"></span>)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("btnBusquedaAbierta").addEventListener("click", function () {
+            var formDiv = document.getElementById("formBusquedaAbierta");
+            formDiv.style.display = formDiv.style.display === "none" ? "block" : "none";
+        });
+
+        document.getElementById("btnCancelarBusqueda").addEventListener("click", function () {
+            document.getElementById("formBusquedaAbierta").style.display = "none";
+        });
+
+        $(function () {
+            var deleteId = 0;
+
+            $('.btn-delete').on('click', function () {
+                deleteId = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                $('#usuarioId').text(deleteId);
+                $('#usuarioNombre').text(nombre);
+                $('#confirmDeleteModal').modal('show');
+            });
+
+            $('#btnConfirmDelete').on('click', function () {
+                $.ajax({
+                    url: '@Url.Action("DeleteAjax", "UsuarioController1")',
+                    type: 'POST',
+                    data: { id: deleteId },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#confirmDeleteModal').modal('hide');
+                            $('#row-' + deleteId).fadeOut(400, function () {
+                                $(this).remove();
+                            });
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Ocurrió un error en la petición.');
+                    }
+                });
+            });
+        });
+    </script>
+}
